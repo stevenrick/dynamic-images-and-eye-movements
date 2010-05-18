@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Instructions for setting up the source directories
 #labels Phase-Implementation,Featured
 
 = Introduction =
