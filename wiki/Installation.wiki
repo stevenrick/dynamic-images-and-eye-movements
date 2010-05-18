@@ -1,0 +1,6 @@
+#summary How to get CARPE up and running
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+Download 3rdPartyDependencies.zip and unzip.  Install each .exe file and follow the onscreen instructions, clicking next when appropriate.  Next download CARPE-binary.zip and unzip to a directory.  Launch the file diemdroi.exe.  You should be prompted to "select the eye-tracking movie file".  Select any file located in data/video.  
