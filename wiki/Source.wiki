@@ -1,4 +1,4 @@
-#summary Instructions for setting up the source directories
+#summary Instructions for setting up the CARPE-source
 #labels Phase-Implementation,Featured
 
 = Introduction =
