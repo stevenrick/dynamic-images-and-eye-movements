@@ -1,1 +1,0 @@
-DlgResToDlgTemplate.exe Debug\dlgx.exe 103 dlg103.h
