@@ -1,4 +1,4 @@
-#summary How to get CARPE up and running
+#summary How to get the CARPE-binary up and running
 #labels Featured,Phase-Deploy
 
 = Introduction =
