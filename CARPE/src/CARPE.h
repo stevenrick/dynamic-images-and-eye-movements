@@ -153,6 +153,7 @@ public:
 	void mouseMoved(int x, int y );
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
+	void windowResized(int w, int h);
 	void mouseReleased();
 	//////////////////////////////
 	
@@ -330,5 +331,12 @@ public:
 
 	// detects if the gui changed, and to update the display
 	bool					reset;
+
+
+	/* Window properties */
+	int app_screen_width;
+	int app_screen_height;
+	int movie_offset_x, movie_offset_y; // from bottom left (for glReadPixels)
+
 };
 
