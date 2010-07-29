@@ -125,7 +125,7 @@ string myOpenMovieDialog()
 	ZeroMemory(&ofn, sizeof(OPENFILENAME));
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = 0;
-	ofn.lpstrFilter = "Movie Files\0*.mov;*.avi;*.xvd\0All Files\0*.*\0\0";
+	ofn.lpstrFilter = "Movie Files\0*.mov;*.avi;*.xvd;*.mp4;*.m4a;*.m4v\0All Files\0*.*\0\0";
 	ofn.lpstrFile = szFileName;
 	ofn.lpstrTitle = "Open The Eye-Tracking Movie File";
 	ofn.nFileOffset = 0;

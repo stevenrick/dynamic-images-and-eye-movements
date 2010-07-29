@@ -25,6 +25,10 @@
 #include "resource.h"
 #include "direct.h"
 
+#ifndef round
+	#define round(x) ( (x) >= 0 ? (x)+0.5 : (x)-0.5 )
+#endif
+
 #ifndef WITHIN
 	#define WITHIN(pt, pt2, radius) (((pt) > ((pt2) - (radius))) && ((pt) < ((pt2) + (radius))))
 #endif
@@ -147,7 +151,7 @@ void diemDROI::loadEyeTrackingMovie()
 
 	
 	numFrames = mov.getTotalNumFrames()-1;
-	FPS = numFrames/mov.getDuration();
+	FPS = round(((float)numFrames/mov.getDuration()));
 	if(FPS == 0)
 	{
 		printf("Unable to read FPS from the codec.  Try a different encoding.  Defaulting to 30 FPS...\n");
@@ -327,7 +331,7 @@ void diemDROI::initializeGui()
 	//	kofxGui_Button_Off, kofxGui_Button_Switch);
 
 	// add the objects panel
-	panel1 = gui->addPanel(gui_OptionsPanel, "Viewing Options", 
+	panel1 = gui->addPanel(gui_OptionsPanel, "Viewing Options ('p')", 
 		-1, 10, 
 		10, 10);
 	panel1->addButton(gui_EnableMovie, "Show Movie", 
@@ -386,7 +390,7 @@ void diemDROI::initializeGui()
 		0, 9, 7, &cluster_tags[0]);
 	panel1->addSlider(gui_EyefilesSwitch, "Number of Subjects",
 		175, OFXGUI_SLIDER_HEIGHT,
-		0, maxEyeListSize, maxEyeListSize, 1, 1);
+		1, maxEyeListSize, maxEyeListSize, 1, 1);
 	minClusterComponents = 1; 
 	maxClusterComponents = 8;
 	//panel1->addSwitch(gui_ResSwitch, "Monitor Resolution", 
@@ -395,12 +399,14 @@ void diemDROI::initializeGui()
 	panel1->active = false;
 	
 	panel6 = gui->addPanel(gui_ExportPanel, "Recording",
-		-1, 490, 
+		-1, 480, 
 		10, 10);
 	panel6->addButton(gui_EnableRecording, "Record Output Movie", 
 		10, 10, showRecording, kofxGui_Button_Switch);
+#ifndef _USEUNSTABLE
 	panel6->addButton(gui_EnableSaveMovieImages, "Record Movie Images", 
 		10, 10, saveMovieImages, kofxGui_Button_Switch);	
+#endif
 	// record a frame to an image??
 	panel6->active = false;
 
@@ -498,13 +504,17 @@ void diemDROI::initializeGui()
 void diemDROI::setup(){	 
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofBackground(0,0,0);
-	ofSetWindowTitle("C.A.R.P.E.");
+	ofSetWindowTitle("C.A.R.P.E. by The DIEM Project");
 	initializeOptions();
 
 	loadEyeTrackingMovie();
 	
 	// set the window size to match the movie + 30 for the GUI slider
-	ofSetWindowShape(mov.width, mov.height+30);
+	app_screen_width = MAX(mov.width, 400);
+	app_screen_height = MAX(mov.height+30, 550);
+	ofSetWindowShape(app_screen_width, app_screen_height);
+	movie_offset_x = 0;
+	movie_offset_y = app_screen_height - mov.height;
 
 	loadEyeTrackingData();
 
@@ -1436,7 +1446,7 @@ void diemDROI::draw(){
 		//ofRect(newPatch.left, newPatch.upper, newPatch.width, newPatch.height);
 
 		ofSetColor(0xFFFFFF);
-		string tagString = "Copyright 2009 (CC-SA-NC) Henderson's Visual Cognition Lab @ Edinburgh University\n(e-mail visual.cognition@ed.ac.uk for information)";
+		string tagString = "Copyright 2010 (CC-SA-NC) The DIEM Project\n(visit http://thediemproject.wordpress.com for more info)";
 		ofDrawBitmapString(tagString.c_str(), 5, mov.height-25);
 		
 		// draw the movie time as text above the movie time slider
@@ -1474,7 +1484,7 @@ void diemDROI::draw(){
 				glReadBuffer(GL_BACK);
 
 				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, pboIds[0]);
-				glReadPixels(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+				glReadPixels(movie_offset_x, movie_offset_y, SCREEN_WIDTH, SCREEN_HEIGHT, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 				//glReadPixels(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, 0);
 				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
 
@@ -1771,6 +1781,12 @@ void diemDROI::drawMovieControls()
 		ofVertex(6,mov.height+27);
 		ofEndShape();
 	}
+}
+
+void diemDROI::windowResized(int w, int h)
+{
+	movie_offset_x = 0;
+	movie_offset_y = h - mov.height;
 }
 
 //--------------------------------------------------------------
