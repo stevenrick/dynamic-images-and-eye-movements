@@ -1,0 +1,1 @@
+Please visit our website for instructions on getting the CARPE binary to run: http://thediemproject.wordpress.com/2010/07/29/visualizing-dynamic-images-and-eye-movements-with-carpe/

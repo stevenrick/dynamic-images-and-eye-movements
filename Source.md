@@ -1,0 +1,3 @@
+# Introduction #
+
+This project has been built using openFramework pre-release v06.  You can download this library from the downloads list.  Once you have extracted the files, navigate to the apps/ directory and create a directory called "CARPE".  In this directory, use the svn checkout command on the trunk directory to place the required Microsoft Visual Studio files in the appropriate relative path location.  Note, all project settings are relative to this location and changing the directory structure will require editing the project settings in MSVS.
